@@ -64,25 +64,89 @@ app.get('/', (req, res) => {
 
 app.get('/devices', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  res.status(200).send(JSON.stringify({
-    num_devices: 1,
-    device_list: [{
-      device_id: uuid(),
-      device_name: "My PI",
-      commands_topic: process.env.GCP_PUBSUB_TOPIC_COMMANDS,
-      status_topic: process.env.GCP_PUBSUB_TOPIC_STATUS
-    }]
-  }))
-})
-
-app.get('/devices/:deviceId/lights/all', (req, res) => {
-  var query = datastore.createQuery('LedStatus');
+  var query = datastore.createQuery('IOTDevice');
   datastore.runQuery(query)
     .then((results) => {
-      console.log('' + results.length + ' Light statuses found');
+      console.log("Result", results);
+      console.log('' + results[0].length + ' Device(s) found');
       res.status(200).send(JSON.stringify({
-        num_lights: results.length,
-        status: results
+        num_devices: results[0].length,
+        status: results[0]
+      }))
+    }).catch((err) => {
+      console.error('ERROR getting DEVICES:', err);
+      res.status(501).send(JSON.stringify({
+        num_devices: 0,
+        status: [],
+        error: err
+      }))
+    });
+})
+
+app.get('/devices/:deviceId/lights', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  var device_id=req.params["deviceId"];
+  console.log("Retrieving status of lights for device '" + device_id + "'");
+  var query = datastore.createQuery('IOTDeviceOutput')
+                       .filter('device_id', '=', device_id);
+  datastore.runQuery(query)
+    .then((results) => {
+      console.log('' + results[0].length + ' Light statuses found');
+      res.status(200).send(JSON.stringify({
+        num_lights: results[0].length,
+        status: results[0]
+      }))
+    }).catch((err) => {
+      console.error('ERROR:', err);
+      res.status(501).send(JSON.stringify({
+        num_lights: 0,
+        status: [],
+        error: err
+      }))
+    });
+})
+
+app.get('/devices/:deviceId/lights/t/:type/c/:color', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  var device_id=req.params["deviceId"];
+  var output_type=req.params["type"];
+  var output_color=req.params["color"];
+  //console.log("Retrieving status of lights for device '" + device_id + "'");
+  var query = datastore.createQuery('IOTDeviceOutput')
+                       .filter('device_id', '=', device_id)
+                       .filter('light_color', '=', output_color)
+                       .filter('light_type', '=', output_type);
+  datastore.runQuery(query)
+    .then((results) => {
+      console.log('' + results[0].length + ' Light statuses found');
+      res.status(200).send(JSON.stringify({
+        num_lights: results[0].length,
+        status: results[0]
+      }))
+    }).catch((err) => {
+      console.error('ERROR:', err);
+      res.status(501).send(JSON.stringify({
+        num_lights: 0,
+        status: [],
+        error: err
+      }))
+    });
+})
+
+app.get('/devices/:deviceId/lights/p/:gpio_pin', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  var device_id=req.params["deviceId"];
+  var gpio_pin=req.params["gpio_pin"];
+  //console.log("Retrieving status of lights for device '" + device_id + "'");
+  var query = datastore.createQuery('IOTDeviceOutput')
+                       .filter('device_id', '=', device_id)
+                       .filter('gpio_pin', '=', gpio_pin);
+  datastore.runQuery(query)
+    .then((results) => {
+      console.log('' + results[0].length + ' Light statuses found');
+      res.status(200).send(JSON.stringify({
+        num_lights: results[0].length,
+        status: results[0]
       }))
     }).catch((err) => {
       console.error('ERROR:', err);
