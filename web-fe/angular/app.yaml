@@ -1,0 +1,9 @@
+service: iot-poc-01-web-fe
+version: 0.0.1
+runtime: nodejs
+env: flex
+
+env_variables:
+    GCP_PUBSUB_TOPIC_COMMANDS: gpio_commands_topic
+    GCP_PUBSUB_SUBSCRIPTION_COMMANDS: gpio_commands_subscription
+    GCP_PUBSUB_TOPIC_STATUS: gpio_status_topic

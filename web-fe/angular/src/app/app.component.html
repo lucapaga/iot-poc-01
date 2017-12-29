@@ -1,0 +1,23 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<mat-toolbar  color="primary">
+  LED Manager
+</mat-toolbar>
+  <h1 class="mdc-typography--body1">
+    Click buttons to switch on and off your LEDs
+  </h1>
+  <p>
+    <mat-button-toggle value="red" (change)="toggleRedLED($event)">
+      Red LED
+    </mat-button-toggle>
+    <mat-button-toggle value="green" (change)="toggleGreenLED($event)">
+      Green LED
+    </mat-button-toggle>
+    <mat-button-toggle value="green" (change)="toggleLightBulb($event)">
+      Lampadina
+    </mat-button-toggle>
+  </p>
+  <p>
+    <button mat-raised-button (click)="switchAllOff()">Spegni Tutti</button>
+    <!--button mat-raised-button (click)="toggleLEDs()">Inverti Tutti</button-->
+    <button mat-raised-button (click)="switchAllOn()">Accendi Tutti</button>
+  </p>
