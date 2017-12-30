@@ -91,29 +91,31 @@ app.post('/devices', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
 
   var newDeviceKey = datastore.key("IOTDevice");
-  logDebug("KEY: ", newDeviceKey);
-
   var newID = uuid();
-  logDebug("UUID: ", newID);
 
+  logDebug("KEY: ", newDeviceKey);
+  logDebug("UUID: ", newID);
   logDebug("Device NAME: ", req.body.deviceName);
-  logDebug("COMMANDS Topic: ", process.env.GCP_PUBSUB_TOPIC_COMMANDS);
+  logDebug("COMMANDS Topic: ", req.body.commandsTopic);
+  logDebug("STATUS Topic: ", req.body.statusTopic);
 
   var newDeviceEntity = {
     key: newDeviceKey,
     data: {
-      commands_topic: process.env.GCP_PUBSUB_TOPIC_COMMANDS,
+      commands_topic: req.body.commandsTopic,
       device_id: newID,
       device_name: req.body.deviceName,
-      status_topic: "gpio_status_topic"
+      status_topic: req.body.statusTopic
     }
   };
 
   datastore.save(newDeviceEntity)
     .then(() => {
-      console.log(`Saved '${newDeviceEntity.key.name}': '${newDeviceEntity.key.value}'`);
+      logDebug("Saved IOTDevice: ", newDeviceKey);
       res.status(200).send(JSON.stringify({
-        status: "OK"
+        status: "OK",
+        kind: newDeviceKey.kind,
+        id: newDeviceKey.id
       }));
     })
     .catch((err) => {
@@ -146,7 +148,46 @@ app.get('/devices/:deviceId/outs', (req, res) => {
         error: err
       }));
     });
-})
+});
+
+
+app.post('/devices/:deviceId/outs', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  var device_id=req.params["deviceId"];
+  if(req.body.outputs != null && req.body.outputs.length > 0) {
+    for (var i = 0; i < req.body.outputs.length; i++) {
+      var anOutput = req.body.outputs[i];
+      logDebug("Prosessing request: ", anOutput);
+      var newDeviceOutputKey = datastore.key("IOTDeviceOutput");
+      var newID = uuid();
+      var newDeviceOutputEntity = {
+        key: newDeviceOutputKey,
+        data: {
+          device_id: device_id,
+          gpio_pin: anOutput.gpio_pin,
+          light_color: anOutput.light_color,
+          light_type: anOutput.light_type,
+          light_status: "off"
+        }
+      };
+      datastore.save(newDeviceOutputEntity)
+        .then(() => {
+          logDebug("Saved IOTDeviceOutput: ", newDeviceOutputKey);
+        })
+        .catch((err) => {
+          console.error('ERROR:', err);
+        });
+    }
+    res.status(200).send(JSON.stringify({
+      status: "Committed to insert, eventually consistent"
+    }));
+  } else {
+    res.status(501).send(JSON.stringify({
+      message: "please define at least 1 'outputs' object"
+    }));
+  }
+});
+
 
 app.get('/devices/:deviceId/outs/t/:type/c/:color', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
