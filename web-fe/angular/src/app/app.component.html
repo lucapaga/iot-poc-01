@@ -1,23 +1,16 @@
-<!--The content below is only a placeholder and can be replaced.-->
+
 <mat-toolbar  color="primary">
-  LED Manager
+  {{title}}
 </mat-toolbar>
-  <h1 class="mdc-typography--body1">
-    Click buttons to switch on and off your LEDs
-  </h1>
-  <p>
-    <mat-button-toggle value="red" (change)="toggleRedLED($event)">
-      Red LED
-    </mat-button-toggle>
-    <mat-button-toggle value="green" (change)="toggleGreenLED($event)">
-      Green LED
-    </mat-button-toggle>
-    <mat-button-toggle value="green" (change)="toggleLightBulb($event)">
-      Lampadina
-    </mat-button-toggle>
-  </p>
-  <p>
-    <button mat-raised-button (click)="switchAllOff()">Spegni Tutti</button>
-    <!--button mat-raised-button (click)="toggleLEDs()">Inverti Tutti</button-->
-    <button mat-raised-button (click)="switchAllOn()">Accendi Tutti</button>
-  </p>
+
+<!--
+<mat-toolbar class="app-toolbar mat-toolbar mat-primary mat-toolbar-single-row" color="primary"><button class="hamburger mat-button" mat-button="" title="Docs menu"><span class="mat-button-wrapper"><mat-icon class="mat-icon" role="img" svgicon="menu" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" focusable="false" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg></mat-icon></span><div class="mat-button-ripple mat-ripple" matripple=""></div><div class="mat-button-focus-overlay"></div></button><a class="nav-link home" href="/"><img alt="Home" height="40" src="assets/images/logos/angular/logo-nav@2x.png" title="Home" width="150" class=""></a><aio-top-menu class=""><ul role="navigation"><li><a class="nav-link" href="features" title="Features">Features</a></li><li><a class="nav-link" href="docs" title="Docs">Docs</a></li><li><a class="nav-link" href="resources" title="Resources">Resources</a></li><li><a class="nav-link" href="events" title="Events">Events</a></li><li><a class="nav-link" href="https://blog.angular.io/" title="Blog">Blog</a></li></ul></aio-top-menu><aio-search-box class="search-container"><input aria-label="search" placeholder="Search" type="search"></aio-search-box></mat-toolbar>
+-->
+
+<nav>
+  <a routerLink="/home">Home</a>
+  <a routerLink="/deviceslist">My Devices</a>
+  <a routerLink="/devicedetail/957f6691-f6e2-4d83-bb01-801530bff042">A Device</a>
+</nav>
+
+<router-outlet></router-outlet>

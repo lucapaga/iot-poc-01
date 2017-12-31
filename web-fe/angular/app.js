@@ -66,7 +66,7 @@ app.get('/', (req, res) => {
   res.status(200).send('Ready to go');
 });
 
-app.get('/devices', (req, res) => {
+app.get('/api/v1/devices', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   var query = datastore.createQuery('IOTDevice');
   datastore.runQuery(query)
@@ -87,7 +87,7 @@ app.get('/devices', (req, res) => {
     });
 })
 
-app.post('/devices', (req, res) => {
+app.post('/api/v1/devices', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
 
   var newDeviceKey = datastore.key("IOTDevice");
@@ -127,7 +127,7 @@ app.post('/devices', (req, res) => {
     });
 });
 
-app.get('/devices/:deviceId/outs', (req, res) => {
+app.get('/api/v1/devices/:deviceId/outs', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   var device_id=req.params["deviceId"];
   logDebug("Retrieving status of lights for device '" + device_id + "'");
@@ -151,7 +151,7 @@ app.get('/devices/:deviceId/outs', (req, res) => {
 });
 
 
-app.post('/devices/:deviceId/outs', (req, res) => {
+app.post('/api/v1/devices/:deviceId/outs', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   var device_id=req.params["deviceId"];
   if(req.body.outputs != null && req.body.outputs.length > 0) {
@@ -189,7 +189,7 @@ app.post('/devices/:deviceId/outs', (req, res) => {
 });
 
 
-app.get('/devices/:deviceId/outs/t/:type/c/:color', (req, res) => {
+app.get('/api/v1/devices/:deviceId/outs/t/:type/c/:color', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   var device_id=req.params["deviceId"];
   var output_type=req.params["type"];
@@ -216,7 +216,7 @@ app.get('/devices/:deviceId/outs/t/:type/c/:color', (req, res) => {
     });
 })
 
-app.get('/devices/:deviceId/outs/p/:gpio_pin', (req, res) => {
+app.get('/api/v1/devices/:deviceId/outs/p/:gpio_pin', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   var device_id=req.params["deviceId"];
   var gpio_pin=req.params["gpio_pin"];
@@ -241,7 +241,7 @@ app.get('/devices/:deviceId/outs/p/:gpio_pin', (req, res) => {
     });
 })
 
-app.post('/devices/:deviceId/outs/all', (req, res) => {
+app.post('/api/v1/devices/:deviceId/outs/all', (req, res) => {
   var led_state=req.body.ledState;
   var device_id=req.params["deviceId"];
   var action="light-"
@@ -364,7 +364,7 @@ app.post('/devices/:deviceId/outs/all', (req, res) => {
 })
 
 
-app.post('/devices/:deviceId/outs/p/:gpio_pin', (req, res) => {
+app.post('/api/v1/devices/:deviceId/outs/p/:gpio_pin', (req, res) => {
   var led_state=req.body.ledState;
   var device_id=req.params["deviceId"];
   var gpio_pin=req.params["gpio_pin"];

@@ -11,18 +11,25 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { DeviceslistComponent } from './deviceslist/deviceslist.component';
+import { HomeComponent } from './home/home.component';
+import { DevicedetailComponent } from './devicedetail/devicedetail.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DeviceslistComponent,
+    HomeComponent,
+    DevicedetailComponent
   ],
   imports: [
     BrowserAnimationsModule,
     BrowserModule, HttpClientModule,
     MatButtonModule, MatCheckboxModule,
     MatButtonToggleModule, MatIconModule,
-    MatSidenavModule, MatToolbarModule, MatSnackBarModule
+    MatSidenavModule, MatToolbarModule, MatSnackBarModule, AppRoutingModule
   ],
   exports: [
     MatButtonModule, MatCheckboxModule,
