@@ -9,6 +9,7 @@ import { MatButtonModule, MatCheckboxModule, MatToolbarModule, MatSnackBarModule
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTableModule } from '@angular/material/table';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -29,12 +30,14 @@ import { DevicedetailComponent } from './devicedetail/devicedetail.component';
     BrowserModule, HttpClientModule,
     MatButtonModule, MatCheckboxModule,
     MatButtonToggleModule, MatIconModule,
-    MatSidenavModule, MatToolbarModule, MatSnackBarModule, AppRoutingModule
+    MatSidenavModule, MatToolbarModule, MatSnackBarModule, AppRoutingModule,
+    MatTableModule
   ],
   exports: [
     MatButtonModule, MatCheckboxModule,
     MatButtonToggleModule, MatIconModule,
-    MatSidenavModule, MatToolbarModule, MatSnackBarModule
+    MatSidenavModule, MatToolbarModule, MatSnackBarModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,3 +1,43 @@
-<p>
-  deviceslist works!
-</p>
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+<!--
+    device_id: string;
+    device_name: string;
+    commands_topic: string;
+    status_topic: string;
+-->
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="device_id">
+      <mat-header-cell *matHeaderCellDef> UUID </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <a routerLink="/devicedetail/{{element.device_id}}"> {{element.device_id}} </a>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="device_name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.device_name}} </mat-cell>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="commands_topic">
+      <mat-header-cell *matHeaderCellDef> Commands TOPIC </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.commands_topic}} </mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="status_topic">
+      <mat-header-cell *matHeaderCellDef> Status TOPIC </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.status_topic}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>
