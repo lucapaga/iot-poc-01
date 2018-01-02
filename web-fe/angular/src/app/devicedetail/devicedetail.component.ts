@@ -6,7 +6,8 @@ import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
-import {MatSnackBar} from '@angular/material';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-devicedetail',
@@ -27,6 +28,13 @@ export class DevicedetailComponent implements OnInit {
     this.loadDeviceOutputs();
   }
 
+  makeBool(aString: string): boolean {
+    if(aString != null && aString.toLowerCase() == "true") {
+      return true;
+    }
+    return false;
+  }
+
   loadDeviceOutputs(): void {
     const device_id = this.route.snapshot.paramMap.get('device_id');
     const api_path = '/api/v1/devices/' + device_id + '/outs';
@@ -37,6 +45,38 @@ export class DevicedetailComponent implements OnInit {
       this.deviceOutputs = data["status"];
       this.snackBar.open("We found " + data["num_lights"] + " commandable outputs");
     });
+  }
+
+  onSlideChange(theEvent : MatSlideToggleChange) {
+    if(theEvent != null) {
+      console.log("EVENT: ", theEvent);
+      var targetStatus = theEvent.checked;
+      var targetPIN = theEvent.source.id;
+      console.log("Operating on PIN " + targetPIN + " to SWITCH IT " + targetStatus);
+
+      const device_id = this.route.snapshot.paramMap.get('device_id');
+      const api_path = '/api/v1/devices/' + device_id + '/outs/p/' + targetPIN;
+      console.log("API CALL: ", api_path);
+
+      var api_body = { led_state : "off" };
+      if(targetStatus) {
+        api_body = { led_state : "on" };
+      }
+      console.log("API POST DATA: ", api_body);
+
+      this.http.post(api_path, api_body).subscribe(data => {
+        console.log("API RETURN: ", data);
+        if(data["status"] != null && data["status"] == "COMMAND SUBMITTED") {
+          if(targetStatus) {
+            this.snackBar.open("Here you have it, your LED/LIGHT is now ON!");
+          } else {
+            this.snackBar.open("Here you have it, your LED/LIGHT is now OFF!");
+          }
+        } else {
+          this.snackBar.open("Something went wrong...");
+        }
+      });
+    }
   }
 
     switchAllOff() {

@@ -1,16 +1,25 @@
-
-<mat-toolbar  color="primary">
-  {{title}}
-</mat-toolbar>
-
+<div class="mat-elevation-z6" >
+  <nav class="docs-navbar-header" style="background: #0a0056;">
 <!--
-<mat-toolbar class="app-toolbar mat-toolbar mat-primary mat-toolbar-single-row" color="primary"><button class="hamburger mat-button" mat-button="" title="Docs menu"><span class="mat-button-wrapper"><mat-icon class="mat-icon" role="img" svgicon="menu" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" focusable="false" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg></mat-icon></span><div class="mat-button-ripple mat-ripple" matripple=""></div><div class="mat-button-focus-overlay"></div></button><a class="nav-link home" href="/"><img alt="Home" height="40" src="assets/images/logos/angular/logo-nav@2x.png" title="Home" width="150" class=""></a><aio-top-menu class=""><ul role="navigation"><li><a class="nav-link" href="features" title="Features">Features</a></li><li><a class="nav-link" href="docs" title="Docs">Docs</a></li><li><a class="nav-link" href="resources" title="Resources">Resources</a></li><li><a class="nav-link" href="events" title="Events">Events</a></li><li><a class="nav-link" href="https://blog.angular.io/" title="Blog">Blog</a></li></ul></aio-top-menu><aio-search-box class="search-container"><input aria-label="search" placeholder="Search" type="search"></aio-search-box></mat-toolbar>
+    <a mat-button class="docs-button" style="color: white" routerLink="/">
+      <mat-icon class="md-48" style="color: white">important devices</mat-icon>
+    </a>
 -->
+    <!--i class="material-icons">important devices</i-->
 
-<nav>
-  <a routerLink="/home">Home</a>
-  <a routerLink="/deviceslist">My Devices</a>
-  <a routerLink="/devicedetail/957f6691-f6e2-4d83-bb01-801530bff042">A Device</a>
-</nav>
+    <a mat-button class="docs-button" style="color: white; font-size: 28px;" routerLink="/">
+      <!--img  alt="angular" class="docs-angular-logo" src="../../../assets/img/homepage/angular-white-transparent.svg"-->
+      <span> {{title}} </span>
+    </a>
+    <a mat-button class="docs-navbar-hide-small docs-button" style="color: white;" routerLink="/home"> HOME </a>
+    <a mat-button class="docs-navbar-hide-small docs-button" style="color: white;" routerLink="/deviceslist"> MY DEVICES </a>
+    <!--
+    <div class="flex-spacer"></div>
+    <a mat-button class="docs-button docs-navbar-hide-small" style="color: white" href="https://github.com/lucapaga">
+      SIGN OUT
+    </a>
+    -->
+  </nav>
+</div>
 
 <router-outlet></router-outlet>

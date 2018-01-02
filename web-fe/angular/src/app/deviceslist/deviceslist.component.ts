@@ -15,7 +15,7 @@ export class DeviceslistComponent implements OnInit {
   displayedColumns = ['device_id', 'device_name', 'commands_topic', 'status_topic'];
   dataSource = null; //new MatTableDataSource<Element>(ELEMENT_DATA);
 
-  //deviceList = [];
+  deviceList = [];
 
   constructor(private http: HttpClient,
               private snackBar: MatSnackBar) { }
@@ -31,6 +31,7 @@ export class DeviceslistComponent implements OnInit {
     this.http.get(api_path).subscribe(data => {
       console.log("This is the list of DEVICES: ", data);
       this.dataSource = new MatTableDataSource<DeviceElement>(data["status"]);
+      this.deviceList = data["status"];
       this.snackBar.open("We found " + data["num_devices"] + " Devices");
     });
   }

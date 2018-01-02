@@ -3,7 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material';
+import { MatButtonModule, MatMenuModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
+
 
 @Component({
   selector: 'app-root',

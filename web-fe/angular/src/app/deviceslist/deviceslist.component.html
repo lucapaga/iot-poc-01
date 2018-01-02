@@ -1,17 +1,9 @@
-<div class="example-container mat-elevation-z8">
-  <mat-table #table [dataSource]="dataSource">
+<h3 style="padding-left: 10px;"> Devices </h3>
 
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
 
 <!--
-    device_id: string;
-    device_name: string;
-    commands_topic: string;
-    status_topic: string;
--->
-
-    <!-- Position Column -->
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource">
     <ng-container matColumnDef="device_id">
       <mat-header-cell *matHeaderCellDef> UUID </mat-header-cell>
       <mat-cell *matCellDef="let element">
@@ -19,19 +11,16 @@
       </mat-cell>
     </ng-container>
 
-    <!-- Name Column -->
     <ng-container matColumnDef="device_name">
       <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.device_name}} </mat-cell>
     </ng-container>
 
-    <!-- Weight Column -->
     <ng-container matColumnDef="commands_topic">
       <mat-header-cell *matHeaderCellDef> Commands TOPIC </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.commands_topic}} </mat-cell>
     </ng-container>
 
-    <!-- Symbol Column -->
     <ng-container matColumnDef="status_topic">
       <mat-header-cell *matHeaderCellDef> Status TOPIC </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.status_topic}} </mat-cell>
@@ -40,4 +29,19 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
+</div>
+-->
+<div style="padding: 15px" *ngFor="let aDevice of deviceList">
+  <mat-card class="example-card">
+    <mat-card-header>
+      <div mat-card-avatar>
+        <img mat-card-image src="assets/bannerPic2-1.png" style="height: 45px; width: 50px; margin-left: -10px; margin-top: -12px;" alt="Your Device">
+      </div>
+      <mat-card-title> {{aDevice.device_name}} </mat-card-title>
+      <mat-card-subtitle> ID: {{aDevice.device_id}} </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+      <a mat-button routerLink="/devicedetail/{{aDevice.device_id}}">VIEW DETAILS</a>
+    </mat-card-actions>
+  </mat-card>
 </div>

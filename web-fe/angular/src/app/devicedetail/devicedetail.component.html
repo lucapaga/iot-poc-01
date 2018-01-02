@@ -1,6 +1,19 @@
-<h1 class="mdc-typography--body1">
-  Click buttons to switch on and off your LEDs
-</h1>
+<mat-card>
+  <h3 style="padding-left: 10px;"> Lights &amp; Sensors </h3>
+  <mat-card-content>
+    <mat-slide-toggle *ngFor="let anOutput of deviceOutputs"
+              color="primary"
+              [id]="anOutput.gpio_pin"
+              [checked]="makeBool(anOutput.light_status)"
+              (change)="onSlideChange($event)"
+              style="display: block; margin-bottom: 15px;">
+        {{anOutput.light_color}} {{anOutput.light_type}}
+        (<b>{{anOutput.gpio_pin}}</b>)
+    </mat-slide-toggle>
+  </mat-card-content>
+</mat-card>
+
+<h4 style="padding-left: 10px;"> Legacy </h4>
 <p>
   <mat-button-toggle value="red" (change)="toggleRedLED($event)">
     Red LED
@@ -16,13 +29,3 @@
   <button mat-raised-button (click)="switchAllOff()">Spegni Tutti</button>
   <button mat-raised-button (click)="switchAllOn()">Accendi Tutti</button>
 </p>
-<p>
-  Commandable Outputs:
-</p>
-<ul>
-  <li *ngFor="let anOutput of deviceOutputs">
-    <b>{{anOutput.gpio_pin}}</b>
-    {{anOutput.light_color}} {{anOutput.light_type}}
-    <span class="badge">{{anOutput.light_status}}</span>
-  </li>
-</ul>

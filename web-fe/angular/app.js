@@ -400,7 +400,7 @@ app.post('/api/v1/devices/:deviceId/outs/p/:gpio_pin', (req, res) => {
         logDebug("[msgID: " + messageId + "] Message sent: RED LED");
       });
 
-  res.status(200).send('All messages sent');
+  res.status(200).send(JSON.stringify({ status: "COMMAND SUBMITTED", gpio_pin: gpio_pin, device_id: device_id }));
 })
 
 const logWarn = (message, objectData) => {
