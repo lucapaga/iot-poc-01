@@ -1,36 +1,4 @@
 <h3 style="padding-left: 10px;"> Devices </h3>
-
-
-<!--
-<div class="example-container mat-elevation-z8">
-  <mat-table #table [dataSource]="dataSource">
-    <ng-container matColumnDef="device_id">
-      <mat-header-cell *matHeaderCellDef> UUID </mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <a routerLink="/devicedetail/{{element.device_id}}"> {{element.device_id}} </a>
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="device_name">
-      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.device_name}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="commands_topic">
-      <mat-header-cell *matHeaderCellDef> Commands TOPIC </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.commands_topic}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="status_topic">
-      <mat-header-cell *matHeaderCellDef> Status TOPIC </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.status_topic}} </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
-</div>
--->
 <div style="padding: 15px" *ngFor="let aDevice of deviceList">
   <mat-card class="example-card">
     <mat-card-header>
@@ -41,7 +9,11 @@
       <mat-card-subtitle> ID: {{aDevice.device_id}} </mat-card-subtitle>
     </mat-card-header>
     <mat-card-actions>
-      <a mat-button routerLink="/devicedetail/{{aDevice.device_id}}">VIEW DETAILS</a>
+      <a mat-button color="accent" (click)="deleteDevice(aDevice)"> REMOVE </a>
+      <a mat-button routerLink="/devicedetail/{{aDevice.device_id}}"> VIEW DETAILS </a>
     </mat-card-actions>
   </mat-card>
+</div>
+<div style="position: fixed; bottom: 15px; right: 30px;">
+  <button mat-fab color="primary" (click)="openCreateDevice()"> + </button>
 </div>

@@ -1,0 +1,29 @@
+<ol>
+  <li>
+    <mat-form-field>
+      <input matInput [(ngModel)]="name" placeholder="Familiar Name">
+    </mat-form-field>
+  </li>
+  <li>
+    <mat-form-field>
+      <input matInput [(ngModel)]="commandsTopic" placeholder="PUB/SUB Topic for COMMANDS">
+    </mat-form-field>
+  </li>
+  <li>
+    <mat-form-field>
+      <input matInput [(ngModel)]="statusTopic" placeholder="PUB/SUB Topic for STATUS">
+    </mat-form-field>
+  </li>
+  <!--
+  <li>
+    <button mat-raised-button (click)="openDialog()">Pick one</button>
+  </li>
+  <li *ngIf="animal">
+    You chose: <i>{{animal}}</i>
+  </li>
+  -->
+</ol>
+<div class="" style="position: relative; right: 5px; float: right;">
+  <button mat-raised-button (click)="cancelSumbission()"> CANCEL </button>
+  <button mat-raised-button color="primary" (click)="confirmNewDevice()"> OK </button>
+</div>
