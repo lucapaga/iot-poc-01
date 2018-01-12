@@ -17,7 +17,7 @@ ENV EMULATE_GPIO_INTERFACE=False                                               \
     GCP_PUBSUB_TOPIC_STATUS=gpio_status_topic                                  \
     PI_EMULATE_GPIO=False
 
-ENV PI_DEVICE_ID
+ENV PI_DEVICE_ID ""
 
 #EXPOSE 5000
 CMD ["./run-daemon.sh"]
