@@ -42,43 +42,80 @@ def on_pubsub_message(message):
         aCommand = JSONDecoder().decode(message.data)
         print("Serialized version: {}".format(aCommand))
 
-        print(" - LED COLOR: {}".format(aCommand["led_color"]))
-        print(" -    ACTION: {}".format(aCommand["action"]))
+        target_device_id = aCommand["device_id"]
+
+        target_gpio_pin = None
+        try:
+            target_gpio_pin = int(aCommand["gpio_pin"])
+        except Exception as e:
+            print("gpio_pin value is not valid: '{}'".format(aCommand["gpio_pin"]))
+
+        target_action = aCommand["action"]
+        target_color = aCommand["led_color"]
+
+        message_ts = None
+        try:
+            message_ts = int(aCommand["ts"])
+        except Exception as e:
+            print("timestamp value is not valid: '{}'".format(aCommand["ts"]))
+
+        if target_device_id != reference_device_id:
+            print("This command is not for me!")
+            return
+
+        if message_ts != None:
+            now_in_millis = int(round(time.time() * 1000))
+            if now_in_millis - message_ts > message_max_ttl:
+                print("Message is expired (timestamp: {}), acking and no action".format(message_ts))
+                message.ack()
+                return
+
+        print(" - LED COLOR: {}".format(target_color))
+        print(" -    ACTION: {}".format(target_action))
 
         theLED = None
-        if aCommand["led_color"].lower() == "green":
-            theLED = green_led
-            print("Working on GREEN led")
-        elif aCommand["led_color"].lower() == "red":
-            theLED = red_led
-            print("Working on RED led")
-        elif aCommand["led_color"].lower() == "light-bulb":
-            theLED = light_bulb
-            print("Working on LIGHT BULB")
+
+        if target_gpio_pin != None and target_gpio_pin > 0:
+            if target_gpio_pin == my_green_led_pin:
+                theLED = green_led
+            elif target_gpio_pin == my_red_led_pin:
+                theLED = red_led
+            else:
+                if EMULATE != True:
+                    theLED = LED(target_gpio_pin)
         else:
-            print("Unkown LED color: {}".format(aCommand["led_color"]))
+            if target_color.lower() == "green":
+                theLED = green_led
+                print("Working on GREEN led")
+            elif target_color.lower() == "red":
+                theLED = red_led
+                print("Working on RED led")
+            elif target_color.lower() == "light-bulb":
+                theLED = light_bulb
+                print("Working on LIGHT BULB")
+            else:
+                print("Unkown LED color: {}".format(target_color))
 
         if theLED != None:
-            if aCommand["action"] == "light-on":
+            if target_action == "light-on":
                 print("Switching the LED on")
                 if EMULATE != True:
-                    if aCommand["led_color"].lower() == "light-bulb":
+                    if target_color.lower() == "light-bulb":
                         theLED.off()
                     else:
                         theLED.on()
-            elif aCommand["action"] == "light-off":
+            elif target_action == "light-off":
                 print("Switching the LED off")
                 if EMULATE != True:
-                    if aCommand["led_color"].lower() == "light-bulb":
+                    if target_color.lower() == "light-bulb":
                         theLED.on()
                     else:
                         theLED.off()
             else:
-                print("Unkown ACTION: {}".format(aCommand["action"]))
-	else:
-	    print("The LED is still NONE! Unable to operate... Ack-ing anyway!")
-
-        message.ack()
+                print("Unkown ACTION: {}".format(target_action))
+        else:
+            print("The LED is still NONE! Unable to operate... Ack-ing anyway!")
+            message.ack()
     except Exception as e:
         print("Errore: {}".format(e))
 
@@ -87,6 +124,11 @@ def run_logic(args):
     global red_led
     global light_bulb
     global button
+    global my_green_led_pin
+    global my_red_led_pin
+
+    my_green_led_pin = args.green_led_pin
+    my_red_led_pin = args.red_led_pin
 
     print("EMULATE='{}'".format(EMULATE))
     if EMULATE != True:
@@ -153,6 +195,12 @@ def run_logic(args):
             print("================================================")
 
 
+reference_device_id = None
+message_max_ttl = 0
+
+my_green_led_pin = None
+my_red_led_pin = None
+
 green_led = None
 red_led = None
 light_bulb = None
@@ -163,6 +211,8 @@ EMULATE = False
 
 if __name__ == '__main__':
     global EMULATE
+    global reference_device_id
+    global message_max_ttl
 
     parser = argparse.ArgumentParser(
         description=__doc__,
@@ -172,6 +222,10 @@ if __name__ == '__main__':
             '--project',
             default=os.environ.get('GOOGLE_CLOUD_PROJECT'),
             help='GCP cloud project name')
+    parser.add_argument(
+            '--device_id',
+            required=True,
+            help='The device UUID used to publish status messages and to match commands')
     parser.add_argument(
             '--commands_topic_name',
             required=True,
@@ -188,6 +242,11 @@ if __name__ == '__main__':
             type=bool,
             default=False,
             help='To Emulate GPIO when testing outside PI')
+    parser.add_argument(
+            '--message_max_ttl',
+            type=int,
+            default=60000,
+            help='Maximum time-to-live for a command message to be considered as not expired')
     parser.add_argument(
             '--green_led_pin',
             type=int,
@@ -217,5 +276,10 @@ if __name__ == '__main__':
 
     print("EMULATION FLAG: {}".format(args.emulate_gpio))
     EMULATE=args.emulate_gpio
+
+    print("DEVICE ID: {}".format(args.device_id))
+    reference_device_id = args.device_id
+
+    message_max_ttl = args.message_max_ttl
 
     run_logic(args)

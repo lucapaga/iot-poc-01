@@ -1,1 +1,8 @@
-{"led_color":"red","action":"light-on"}
+{
+  "device_id":  "8CD9C798DCU9DCU9DC",
+  "led_color":  "RED",
+  "light_type": "LED",
+  "gpio_pin":   "12",
+  "action":     "light-on",
+  "ts":         "742383724872347"
+}
