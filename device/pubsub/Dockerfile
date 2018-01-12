@@ -9,6 +9,8 @@ COPY ./sa/pi-pocs-pubsub-sa01-00afc7e81369.json /opt/pi-pocs/
 COPY ./run-daemon.sh  /opt/pi-pocs/
 COPY ./sample-pubsub-message.txt /opt/pi-pocs/
 
+WORKDIR /opt/pi-pocs/
+
 ENV EMULATE_GPIO_INTERFACE=False                                               \
     GCP_APP_CRED_JSON_PATH=/opt/pi-pocs/pi-pocs-pubsub-sa01-00afc7e81369.json  \
     GCP_PROJECT_NAME=luca-paganelli-formazione                                 \
