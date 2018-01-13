@@ -58,9 +58,9 @@ export class DevicedetailComponent implements OnInit {
       const api_path = '/api/v1/devices/' + device_id + '/outs/p/' + targetPIN;
       console.log("API CALL: ", api_path);
 
-      var api_body = { led_state : "off" };
+      var api_body = { ledState : "off" };
       if(targetStatus) {
-        api_body = { led_state : "on" };
+        api_body = { ledState : "on" };
       }
       console.log("API POST DATA: ", api_body);
 
