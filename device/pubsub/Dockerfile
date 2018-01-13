@@ -1,8 +1,8 @@
-FROM lucapaga/resin-raspberrypi3-python-2.7-slim:1.0.0
+FROM lucapaga/resin-raspberrypi3-python-2.7-slim:1.0.1
 
 MAINTAINER luca.paga@gmail.com
 
-RUN apt-get install uuid-runtime
+#RUN apt-get install uuid-runtime
 
 COPY ./main.py /opt/pi-pocs/
 COPY ./sa/pi-pocs-pubsub-sa01-00afc7e81369.json /opt/pi-pocs/

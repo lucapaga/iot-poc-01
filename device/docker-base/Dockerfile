@@ -4,6 +4,7 @@ MAINTAINER luca.paga@gmail.com
 
 RUN apt-get update && \
     apt-get install build-essential && \
+    apt-get install uuid-runtime && \
     pip install --upgrade gpiozero && \
     pip install --upgrade google-cloud && \
     pip install --upgrade google-cloud-pubsub && \
