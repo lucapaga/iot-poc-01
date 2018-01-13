@@ -197,7 +197,7 @@ def run_logic(args):
     try:
         while True:
             print("Sleeping now")
-            time.sleep(10)
+            time.sleep(30)
     except KeyboardInterrupt:
         if subscription_created:
             print("================================================")
