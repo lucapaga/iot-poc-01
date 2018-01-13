@@ -196,17 +196,17 @@ def run_logic(args):
 
 
 # GLOBALS
-reference_device_id
-message_max_ttl
-EMULATE
+reference_device_id = None
+message_max_ttl = None
+EMULATE = None
 
-my_green_led_pin
-my_red_led_pin
+my_green_led_pin = None
+my_red_led_pin = None
 
-green_led
-red_led
-light_bulb
-button
+green_led = None
+red_led = None
+light_bulb = None
+button = None
 
 
 if __name__ == '__main__':
