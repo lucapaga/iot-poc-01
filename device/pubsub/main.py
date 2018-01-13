@@ -210,15 +210,15 @@ button
 
 
 if __name__ == '__main__':
-    global EMULATE
-    global reference_device_id
-    global message_max_ttl
-    global my_green_led_pin
-    global my_red_led_pin
-    global green_led
-    global red_led
-    global light_bulb
-    global button
+    #global EMULATE
+    #global reference_device_id
+    #global message_max_ttl
+    #global my_green_led_pin
+    #global my_red_led_pin
+    #global green_led
+    #global red_led
+    #global light_bulb
+    #global button
 
     EMULATE = False
     reference_device_id = None
