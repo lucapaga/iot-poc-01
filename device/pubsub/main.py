@@ -195,24 +195,34 @@ def run_logic(args):
             print("================================================")
 
 
-reference_device_id = None
-message_max_ttl = 0
+# GLOBALS
+reference_device_id
+message_max_ttl
+EMULATE
 
-my_green_led_pin = None
-my_red_led_pin = None
+my_green_led_pin
+my_red_led_pin
 
-green_led = None
-red_led = None
-light_bulb = None
-button = None
-
-EMULATE = False
+green_led
+red_led
+light_bulb
+button
 
 
 if __name__ == '__main__':
     global EMULATE
     global reference_device_id
     global message_max_ttl
+    global my_green_led_pin
+    global my_red_led_pin
+    global green_led
+    global red_led
+    global light_bulb
+    global button
+
+    EMULATE = False
+    reference_device_id = None
+    message_max_ttl = 0
 
     parser = argparse.ArgumentParser(
         description=__doc__,
