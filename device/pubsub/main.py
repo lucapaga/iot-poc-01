@@ -42,24 +42,40 @@ def on_pubsub_message(message):
         aCommand = JSONDecoder().decode(message.data)
         print("Serialized version: {}".format(aCommand))
 
-        target_device_id = aCommand["device_id"]
+        target_device_id = None
+        try:
+            target_device_id = aCommand["device_id"]
+        except Exception as e:
+            print("'device_id' is invalid or undefined (ERROR: {})".format(e))
 
         target_gpio_pin = None
         try:
             target_gpio_pin = int(aCommand["gpio_pin"])
         except Exception as e:
-            print("gpio_pin value is not valid: '{}'".format(aCommand["gpio_pin"]))
+            print("'gpio_pin' is invalid or undefined (ERROR: {})".format(e))
 
-        target_action = aCommand["action"]
-        target_color = aCommand["led_color"]
+        target_action = None
+        try:
+            target_action = aCommand["action"]
+        except Exception as e:
+            print("'action' is invalid or undefined (ERROR: {})".format(e))
+
+        target_color = None
+        try:
+            target_color = aCommand["led_color"]
+        except Exception as e:
+            print("'led_color' is invalid or undefined (ERROR: {})".format(e))
 
         message_ts = None
         try:
             message_ts = int(aCommand["ts"])
         except Exception as e:
-            print("timestamp value is not valid: '{}'".format(aCommand["ts"]))
+            print("'ts' is invalid or undefined (ERROR: {})".format(e))
 
-        if target_device_id != reference_device_id:
+        if target_device_id == None:
+            print("Command is not targeted to any device, discarding action")
+            return
+        elif target_device_id != reference_device_id:
             print("This command is not for me!")
             return
         else:
@@ -70,7 +86,8 @@ def on_pubsub_message(message):
             now_in_millis = int(round(time.time() * 1000))
             print("Now is {}".format(now_in_millis))
             if now_in_millis - message_ts > message_max_ttl:
-                print("Message is expired (timestamp: {}), acking and no action".format(message_ts))
+                time_diff_s = (now_in_millis - message_ts) * 1000
+                print("Message is expired (timestamp: {}, diff: {} s), acking and no action".format(message_ts, time_diff_s))
                 message.ack()
                 return
             else:
