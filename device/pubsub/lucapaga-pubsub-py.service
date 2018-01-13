@@ -4,7 +4,7 @@
 
  [Service]
  Type=idle
- ExecStart=/home/pi/iot-poc-01/device/pubsub/rc.run-daemon-off-docker-on-pi.sh > /var/log/lucapaga/iot-poc-01/device/pubsub/main.log 2>&1
+ ExecStart=/home/pi/iot-poc-01/device/pubsub/rc.run-daemon-off-docker-on-pi.sh >> /var/log/lucapaga/iot-poc-01/device/pubsub/main.log 2>&1
 
  [Install]
  WantedBy=multi-user.target
