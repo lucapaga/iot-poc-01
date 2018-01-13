@@ -1,15 +1,34 @@
 #!/bin/bash
 
+DEVICE_ID_FILE_DIR=/tmp/lucapaga/iot-poc-01/device/pubsub
+DEVICE_ID_FILE_PATH=${DEVICE_ID_FILE_DIR}/device_id.dat
+mkdir -p ${DEVICE_ID_FILE_DIR}
+
 #source ${HOME}/env/bin/activate
 echo "Setting up security using '${GCP_APP_CRED_JSON_PATH}' ..."
 export GOOGLE_APPLICATION_CREDENTIALS=${GCP_APP_CRED_JSON_PATH}
 
-if [ -z ${PI_DEVICE_ID} ];
+if [ -z ${PI_DEVICE_ID} ]
+then
+  echo ""
+  echo " -- PI_DEVICE_ID environment variable not set, loading from file ..."
+
+  PI_DEVICE_ID=$(cat ${DEVICE_ID_FILE_PATH})
+
+  echo ""
+  echo " *** YOUR DEVICE ID IS: '${PI_DEVICE_ID}' *** "
+  echo ""
+else
+  echo ${PI_DEVICE_ID} > ${DEVICE_ID_FILE_PATH}
+fi
+
+if [ -z ${PI_DEVICE_ID} ]
 then
   echo ""
   echo " -- PI_DEVICE_ID environment variable not set, generating new UUID ..."
 
   PI_DEVICE_ID=$(uuidgen)
+  echo ${PI_DEVICE_ID} > ${DEVICE_ID_FILE_PATH}
 
   echo ""
   echo " *** YOUR DEVICE ID IS: '${PI_DEVICE_ID}' *** "
