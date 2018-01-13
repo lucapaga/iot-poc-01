@@ -6,7 +6,7 @@ DEVICE_ID_FILE_PATH=/tmp/lucapaga/iot-poc-01/device/pubsub/device_id.dat
 echo "Setting up security using '${GCP_APP_CRED_JSON_PATH}' ..."
 export GOOGLE_APPLICATION_CREDENTIALS=${GCP_APP_CRED_JSON_PATH}
 
-if [ "${PI_DEVICE_ID}" -eq "" ];
+if [ -z ${PI_DEVICE_ID} ]
 then
   echo ""
   echo " -- PI_DEVICE_ID environment variable not set, loading from file ..."
@@ -20,7 +20,7 @@ else
   echo ${PI_DEVICE_ID} > ${DEVICE_ID_FILE_PATH}
 fi
 
-if [ "${PI_DEVICE_ID}" -eq "" ];
+if [ -z ${PI_DEVICE_ID} ]
 then
   echo ""
   echo " -- PI_DEVICE_ID environment variable not set, generating new UUID ..."
