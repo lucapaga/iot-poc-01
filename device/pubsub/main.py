@@ -62,13 +62,21 @@ def on_pubsub_message(message):
         if target_device_id != reference_device_id:
             print("This command is not for me!")
             return
+        else:
+            print("This command is FOR ME! Proceeding ...")
 
         if message_ts != None:
+            print("Checking message age ...")
             now_in_millis = int(round(time.time() * 1000))
+            print("Now is {}".format(now_in_millis))
             if now_in_millis - message_ts > message_max_ttl:
                 print("Message is expired (timestamp: {}), acking and no action".format(message_ts))
                 message.ack()
                 return
+            else:
+                print("This message is still valid, processing!")
+        else:
+            print("Message's timestamp value is not available, age check can't be performed, proceeding as valid")
 
         print(" - LED COLOR: {}".format(target_color))
         print(" -    ACTION: {}".format(target_action))
@@ -76,14 +84,19 @@ def on_pubsub_message(message):
         theLED = None
 
         if target_gpio_pin != None and target_gpio_pin > 0:
+            print("Explicit GPIO PIN number addressing: {}".format(target_gpio_pin))
             if target_gpio_pin == my_green_led_pin:
+                print("GPIO PIN is for the RED LED")
                 theLED = green_led
             elif target_gpio_pin == my_red_led_pin:
+                print("GPIO PIN is for the RED LED")
                 theLED = red_led
             else:
                 if EMULATE != True:
+                    print("GPIO PIN is not 'well-known', trying with new instantiation")
                     theLED = LED(target_gpio_pin)
         else:
+            print("GPIO PIN is not explicitly addressed, checking LED selector value")
             if target_color.lower() == "green":
                 theLED = green_led
                 print("Working on GREEN led")
