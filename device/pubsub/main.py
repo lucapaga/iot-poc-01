@@ -85,13 +85,14 @@ def on_pubsub_message(message):
             print("Checking message age ...")
             now_in_millis = int(round(time.time() * 1000))
             print("Now is {}".format(now_in_millis))
+            time_diff_s = (now_in_millis - message_ts) / 1000
             if now_in_millis - message_ts > message_max_ttl:
-                time_diff_s = (now_in_millis - message_ts) * 1000
+                time_diff_s = (now_in_millis - message_ts) / 1000
                 print("Message is expired (timestamp: {}, diff: {} s), acking and no action".format(message_ts, time_diff_s))
                 message.ack()
                 return
             else:
-                print("This message is still valid, processing!")
+                print("This message is still valid ({} s), processing!".format(time_diff_s))
         else:
             print("Message's timestamp value is not available, age check can't be performed, proceeding as valid")
 
@@ -130,14 +131,14 @@ def on_pubsub_message(message):
             if target_action == "light-on":
                 print("Switching the LED on")
                 if EMULATE != True:
-                    if target_color.lower() == "light-bulb":
+                    if target_color != None and target_color.lower() == "light-bulb":
                         theLED.off()
                     else:
                         theLED.on()
             elif target_action == "light-off":
                 print("Switching the LED off")
                 if EMULATE != True:
-                    if target_color.lower() == "light-bulb":
+                    if target_color != None and target_color.lower() == "light-bulb":
                         theLED.on()
                     else:
                         theLED.off()
