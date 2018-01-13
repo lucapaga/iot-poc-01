@@ -1,6 +1,8 @@
 #!/bin/bash
 
-DEVICE_ID_FILE_PATH=/tmp/lucapaga/iot-poc-01/device/pubsub/device_id.dat
+DEVICE_ID_FILE_DIR=/tmp/lucapaga/iot-poc-01/device/pubsub
+DEVICE_ID_FILE_PATH=${DEVICE_ID_FILE_DIR}/device_id.dat
+mkdir -p ${DEVICE_ID_FILE_DIR}
 
 #source ${HOME}/env/bin/activate
 echo "Setting up security using '${GCP_APP_CRED_JSON_PATH}' ..."
