@@ -173,24 +173,24 @@ def publish_led_status(project, topic_name, device_id):
     else:
         green_led_status = "unavailable"
 
-    status_message = '{' +
-                        '{' +
-                            '"device_id":"' + str(device_id) + '",' +
-                            '"led_color":"red",' +
-                            '"light_type":"led",' +
-                            '"gpio_pin":"17",' +
-                            '"status":"' + red_led_status + '"' +
-                        '},' +
-                        '{' +
-                            '"device_id":"' + str(device_id) + '",' +
-                            '"led_color":"green",' +
-                            '"light_type":"green",' +
-                            '"gpio_pin":"18",' +
-                            '"status":"' + green_led_status + '"' +
-                        '},' +
-                        '"ts":"' + str(current_ts) + '"' +
-                     '}'
-                     
+    status_message = '{" +
+                        "{" +
+                            "\"device_id\":\"" + str(device_id) + "\"," +
+                            "\"led_color\":\"red\"," +
+                            "\"light_type\":\"led\"," +
+                            "\"gpio_pin\":\"17\"," +
+                            "\"status\":\"" + red_led_status + "\"" +
+                        "}," +
+                        "{" +
+                            "\"device_id\":\"" + str(device_id) + "\"," +
+                            "\"led_color\":\"green\"," +
+                            "\"light_type\":\"green\"," +
+                            "\"gpio_pin\":\"18\"," +
+                            "\"status\":\"" + green_led_status + "\"" +
+                        "}," +
+                        "\"ts\":\"" + str(current_ts) + "\"" +
+                     "}"
+
     print("Publishing message: {}".format(status_message))
     publish_message(project, topic_name, status_message)
 
