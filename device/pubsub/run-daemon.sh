@@ -80,7 +80,7 @@ do
 
   if [ ${retcode} -gt 0 ]
   then
-    echo "Oops, there was an error, restarting ...!"
+    echo "Oops, there was an error (${retcode}), restarting ...!"
   else
     echo "That's it, quitting"
   fi
