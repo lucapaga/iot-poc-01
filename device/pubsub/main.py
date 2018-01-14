@@ -246,7 +246,7 @@ def run_logic(args):
     try:
         while True:
             print("Generating status update message")
-            publish_led_status(args.project, args.status_topic_name)
+            publish_led_status(args.project, args.status_topic_name, args.device_id)
             print("Sleeping now, {} s".format(args.frequency))
             time.sleep(args.frequency)
     except KeyboardInterrupt:
