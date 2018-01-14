@@ -177,7 +177,7 @@ def publish_led_status(project, topic_name, device_id):
     green_led_json = '{"device_id":"{}","led_color":"{}","light_type":"{}","gpio_pin":"{}","status":"{}"}'.format(
                         device_id, "red", "led", "18", green_led_status)
 
-    status_message = '{ {}, {}, "ts":"{}" }'.format(red_led_json, green_led_json, current_ts)
+    status_message = '{{ {}, {}, "ts":"{}" }}'.format(red_led_json, green_led_json, current_ts)
 
     print("Publishing message: {}".format(status_message))
     publish_message(project, topic_name, status_message)
