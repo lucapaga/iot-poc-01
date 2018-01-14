@@ -7,4 +7,4 @@ export GCP_PUBSUB_SUBSCRIPTION_COMMANDS=gpio_commands_subscription
 export GCP_PUBSUB_TOPIC_STATUS=gpio_status_topic
 export PI_EMULATE_GPIO=False
 
-./run-daemon.sh
+sudo run-daemon.sh
