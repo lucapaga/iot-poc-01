@@ -54,24 +54,38 @@ cat ./sample-pubsub-message.txt
 echo ""
 echo ""
 
+retcode=1
+while [ ${retcode} -gt 0 ]
+do
+  echo "Running job"
+  if [ "${PI_EMULATE_GPIO}" == "False" ];
+  then
+    python main.py \
+          --project ${GCP_PROJECT_NAME} \
+          --device_id ${PI_DEVICE_ID} \
+          --commands_topic_name ${GCP_PUBSUB_TOPIC_COMMANDS} \
+          --commands_subscription_name ${GCP_PUBSUB_SUBSCRIPTION_COMMANDS} \
+          --status_topic_name ${GCP_PUBSUB_TOPIC_STATUS}
+  else
+    python main.py \
+          --project ${GCP_PROJECT_NAME} \
+          --device_id ${PI_DEVICE_ID} \
+          --commands_topic_name ${GCP_PUBSUB_TOPIC_COMMANDS} \
+          --commands_subscription_name ${GCP_PUBSUB_SUBSCRIPTION_COMMANDS} \
+          --status_topic_name ${GCP_PUBSUB_TOPIC_STATUS} \
+          --emulate_gpio ${PI_EMULATE_GPIO}
+  fi
 
-if [ "${PI_EMULATE_GPIO}" == "False" ];
-then
-  python main.py \
-        --project ${GCP_PROJECT_NAME} \
-        --device_id ${PI_DEVICE_ID} \
-        --commands_topic_name ${GCP_PUBSUB_TOPIC_COMMANDS} \
-        --commands_subscription_name ${GCP_PUBSUB_SUBSCRIPTION_COMMANDS} \
-        --status_topic_name ${GCP_PUBSUB_TOPIC_STATUS}
-else
-  python main.py \
-        --project ${GCP_PROJECT_NAME} \
-        --device_id ${PI_DEVICE_ID} \
-        --commands_topic_name ${GCP_PUBSUB_TOPIC_COMMANDS} \
-        --commands_subscription_name ${GCP_PUBSUB_SUBSCRIPTION_COMMANDS} \
-        --status_topic_name ${GCP_PUBSUB_TOPIC_STATUS} \
-        --emulate_gpio ${PI_EMULATE_GPIO}
-fi
+  retcode=$?
+
+  if [ ${retcode} -gt 0 ]
+  then
+    echo "Oops, there was an error, restarting ...!"
+  else
+    echo "That's it, quitting"
+  fi
+done
+
 
 echo "DONE!"
 echo "Exiting ..."
