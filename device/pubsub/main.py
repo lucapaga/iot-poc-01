@@ -173,7 +173,7 @@ def publish_led_status(project, topic_name, device_id):
     else:
         green_led_status = "unavailable"
 
-    status_message = '{" +
+    status_message = "{" +
                         "{" +
                             "\"device_id\":\"" + str(device_id) + "\"," +
                             "\"led_color\":\"red\"," +
