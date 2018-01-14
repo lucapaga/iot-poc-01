@@ -163,7 +163,7 @@ def publish_led_status(project, topic_name, device_id):
             red_led_status = "off"
     else:
         red_led_status = "unavailable"
-    red_led_json = '{"device_id":"{}","led_color":"{}","light_type":"{}","gpio_pin":"{}","status":"{}"}'.format(
+    red_led_json = '{{ "device_id":"{}","led_color":"{}","light_type":"{}","gpio_pin":"{}","status":"{}" }}'.format(
                         device_id, "red", "led", "17", red_led_status)
 
     green_led_status = None
@@ -174,7 +174,7 @@ def publish_led_status(project, topic_name, device_id):
             green_led_status = "off"
     else:
         green_led_status = "unavailable"
-    green_led_json = '{"device_id":"{}","led_color":"{}","light_type":"{}","gpio_pin":"{}","status":"{}"}'.format(
+    green_led_json = '{{ "device_id":"{}","led_color":"{}","light_type":"{}","gpio_pin":"{}","status":"{}" }}'.format(
                         device_id, "red", "led", "18", green_led_status)
 
     status_message = '{{ {}, {}, "ts":"{}" }}'.format(red_led_json, green_led_json, current_ts)
