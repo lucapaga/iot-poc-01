@@ -63,6 +63,7 @@ do
     python main.py \
           --project ${GCP_PROJECT_NAME} \
           --device_id ${PI_DEVICE_ID} \
+          --frequency 5 \
           --commands_topic_name ${GCP_PUBSUB_TOPIC_COMMANDS} \
           --commands_subscription_name ${GCP_PUBSUB_SUBSCRIPTION_COMMANDS} \
           --status_topic_name ${GCP_PUBSUB_TOPIC_STATUS}
@@ -70,6 +71,7 @@ do
     python main.py \
           --project ${GCP_PROJECT_NAME} \
           --device_id ${PI_DEVICE_ID} \
+          --frequency 5 \
           --commands_topic_name ${GCP_PUBSUB_TOPIC_COMMANDS} \
           --commands_subscription_name ${GCP_PUBSUB_SUBSCRIPTION_COMMANDS} \
           --status_topic_name ${GCP_PUBSUB_TOPIC_STATUS} \
