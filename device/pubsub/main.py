@@ -26,9 +26,11 @@ def delete_subscription(project, subscription_name, client):
     print('Subscription deleted: {}'.format(subscription_path))
 
 
-def publish_message(project, topic_name, message, client):
+def publish_message(project, topic_name, message, client=None):
 #    publisher = pubsub_v1.PublisherClient()
     publisher = client
+    if publisher == None:
+        publisher = pubsub_v1.PublisherClient()
     topic_path = publisher.topic_path(project, topic_name)
     data = u'{}'.format(message)
     data = data.encode('utf-8')
@@ -150,6 +152,48 @@ def on_pubsub_message(message):
     except Exception as e:
         print("Errore: {}".format(e))
 
+def publish_led_status(project, topic_name, device_id):
+    current_ts = int(round(time.time() * 1000))
+
+    red_led_status = None
+    if red_led != None:
+        if red_led.is_lit:
+            red_led_status = "on"
+        else:
+            red_led_status = "off"
+    else:
+        red_led_status = "unavailable"
+
+    green_led_status = None
+    if green_led != None:
+        if green_led.is_lit:
+            green_led_status = "on"
+        else:
+            green_led_status = "off"
+    else:
+        green_led_status = "unavailable"
+
+    status_message = '{' +
+                        '{' +
+                            '"device_id":"' + str(device_id) + '",' +
+                            '"led_color":"red",' +
+                            '"light_type":"led",' +
+                            '"gpio_pin":"17",' +
+                            '"status":"' + red_led_status + '"' +
+                        '},' +
+                        '{' +
+                            '"device_id":"' + str(device_id) + '",' +
+                            '"led_color":"green",' +
+                            '"light_type":"green",' +
+                            '"gpio_pin":"18",' +
+                            '"status":"' + green_led_status + '"' +
+                        '},' +
+                        '"ts":"' + str(current_ts) + '"' +
+                     '}'
+                     
+    print("Publishing message: {}".format(status_message))
+    publish_message(project, topic_name, status_message)
+
 def run_logic(args):
     global green_led
     global red_led
@@ -213,8 +257,10 @@ def run_logic(args):
 
     try:
         while True:
-            print("Sleeping now")
-            time.sleep(30)
+            print("Generating status update message")
+            publish_led_status(args.project, args.status_topic_name)
+            print("Sleeping now, {} s".format(args.frequency))
+            time.sleep(args.frequency)
     except KeyboardInterrupt:
         if subscription_created:
             print("================================================")
@@ -266,6 +312,11 @@ if __name__ == '__main__':
             '--device_id',
             required=True,
             help='The device UUID used to publish status messages and to match commands')
+    parser.add_argument(
+            '--frequency',
+            type=int,
+            default=30,
+            help='Frequency for the device to publish status message')
     parser.add_argument(
             '--commands_topic_name',
             required=True,
