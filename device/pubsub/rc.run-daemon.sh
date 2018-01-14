@@ -61,14 +61,14 @@ do
   echo "Running job"
   if [ "${PI_EMULATE_GPIO}" == "False" ];
   then
-    python main.py \
+    python /home/pi/iot-poc-01/device/pubsub/main.py \
           --project ${GCP_PROJECT_NAME} \
           --device_id ${PI_DEVICE_ID} \
           --commands_topic_name ${GCP_PUBSUB_TOPIC_COMMANDS} \
           --commands_subscription_name ${GCP_PUBSUB_SUBSCRIPTION_COMMANDS} \
           --status_topic_name ${GCP_PUBSUB_TOPIC_STATUS}
   else
-    python main.py \
+    python /home/pi/iot-poc-01/device/pubsub/main.py \
           --project ${GCP_PROJECT_NAME} \
           --device_id ${PI_DEVICE_ID} \
           --commands_topic_name ${GCP_PUBSUB_TOPIC_COMMANDS} \
