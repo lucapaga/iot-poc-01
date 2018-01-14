@@ -1,6 +1,7 @@
 #!/bin/bash
 
-DEVICE_ID_FILE_DIR=/tmp/lucapaga/iot-poc-01/device/pubsub
+#DEVICE_ID_FILE_DIR=/tmp/lucapaga/iot-poc-01/device/pubsub
+DEVICE_ID_FILE_DIR=/var/local/lucapaga/iot-poc-01/device/pubsub
 DEVICE_ID_FILE_PATH=${DEVICE_ID_FILE_DIR}/device_id.dat
 mkdir -p ${DEVICE_ID_FILE_DIR}
 
