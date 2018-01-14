@@ -83,6 +83,9 @@ def on_pubsub_message(message):
         else:
             print("This command is FOR ME! Proceeding ...")
 
+        print("Ack-ing message")
+        message.ack()
+
         if message_ts != None:
             print("Checking message age ...")
             now_in_millis = int(round(time.time() * 1000))
@@ -90,8 +93,7 @@ def on_pubsub_message(message):
             time_diff_s = (now_in_millis - message_ts) / 1000
             if now_in_millis - message_ts > message_max_ttl:
                 time_diff_s = (now_in_millis - message_ts) / 1000
-                print("Message is expired (timestamp: {}, diff: {} s), acking and no action".format(message_ts, time_diff_s))
-                message.ack()
+                print("Message is expired (timestamp: {}, diff: {} s), no action".format(message_ts, time_diff_s))
                 return
             else:
                 print("This message is still valid ({} s), processing!".format(time_diff_s))
@@ -147,10 +149,19 @@ def on_pubsub_message(message):
             else:
                 print("Unkown ACTION: {}".format(target_action))
         else:
-            print("The LED is still NONE! Unable to operate... Ack-ing anyway!")
-            message.ack()
+            print("The LED is still NONE! Unable to operate...!")
+
+        print("Immediately publishing up-to-date status message")
+        publish_led_status_no_ctx()
+
+        print("That's ALL!")
     except Exception as e:
         print("Errore: {}".format(e))
+
+
+def publish_led_status_no_ctx():
+    publish_led_status(ref_gcp_project, ref_subscription_name, reference_device_id)
+
 
 def publish_led_status(project, topic_name, device_id):
     current_ts = int(round(time.time() * 1000))
@@ -264,6 +275,9 @@ reference_device_id = None
 message_max_ttl = None
 EMULATE = None
 
+ref_subscription_name = None
+ref_gcp_project = None
+
 my_green_led_pin = None
 my_red_led_pin = None
 
@@ -358,6 +372,9 @@ if __name__ == '__main__':
 
     print("DEVICE ID: {}".format(args.device_id))
     reference_device_id = args.device_id
+
+    ref_subscription_name = args.status_topic_name
+    ref_gcp_project = args.project
 
     message_max_ttl = args.message_max_ttl
 
