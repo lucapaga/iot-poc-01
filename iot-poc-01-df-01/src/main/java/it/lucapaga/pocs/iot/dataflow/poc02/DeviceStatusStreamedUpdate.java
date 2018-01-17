@@ -5,6 +5,7 @@ package it.lucapaga.pocs.iot.dataflow.poc02;
 
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.extensions.gcp.options.GcpOptions;
+import org.apache.beam.sdk.io.gcp.datastore.DatastoreIO;
 import org.apache.beam.sdk.io.gcp.pubsub.PubsubIO;
 import org.apache.beam.sdk.options.Default;
 import org.apache.beam.sdk.options.DefaultValueFactory;
@@ -46,7 +47,8 @@ public class DeviceStatusStreamedUpdate {
 		// Concepts #2 and #3: Our pipeline applies the composite CountWords
 		// transform, and passes the
 		// static FormatAsTextFn() to the ParDo transform.
-		p.apply("ReadFromPubsub", PubsubIO.readMessages().fromTopic(options.getPubsubTopic()));
+		p.apply("ReadFromPubsub", PubsubIO.readMessages().fromTopic(options.getPubsubTopic())).apply("WriteToDataStore",
+				DatastoreIO.v1().write().withProjectId(options.getProject()));
 
 		p.run().waitUntilFinish();
 	}
