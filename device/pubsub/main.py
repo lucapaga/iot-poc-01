@@ -4,6 +4,16 @@ import argparse
 import time
 from json import JSONDecoder
 
+#
+#
+# TO PROVIDE/INSTALL "Adafruit_DHT":
+#
+# -1- git clone https://github.com/adafruit/Adafruit_Python_DHT.git
+# -2- cd Adafruit_Python_DHT/
+# -3- sudo python setup.py install
+#
+import Adafruit_DHT
+
 from google.cloud import pubsub_v1
 from gpiozero import LED, Button
 
@@ -162,7 +172,6 @@ def on_pubsub_message(message):
 def publish_led_status_no_ctx():
     publish_led_status(ref_gcp_project, ref_subscription_name, reference_device_id)
 
-
 def publish_led_status(project, topic_name, device_id):
     current_ts = int(round(time.time() * 1000))
 
@@ -192,6 +201,36 @@ def publish_led_status(project, topic_name, device_id):
 
     print("Publishing message: {}".format(status_message))
     publish_message(project, topic_name, status_message)
+
+
+def publish_temperature_and_humidity_no_ctx():
+    publish_temperature_and_humidity(ref_gcp_project, ref_subscription_name, reference_device_id)
+
+def publish_temperature_and_humidity(project, topic_name, device_id):
+    current_ts = int(round(time.time() * 1000))
+
+    sensor=2302
+    pin=3
+    humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+
+    if humidity is not None:
+        print(" *** HUMIDITY: {1:0.1f}".format(humidity))
+        humidity_json = '{{ "device_id":"{}", "unit":"{}", "unit_type":"{}", "gpio_pin":"{}","status":"{1:0.1f}" }}'.format(
+                        device_id, "humidity", "sensor", str(pin), humidity)
+        print("Publishing message: {}".format(humidity_json))
+        publish_message(project, topic_name, humidity_json)
+    else:
+        print('Failed to read HUMIDITY ...')
+
+    if temperature is not None:
+        print(" *** TEMPERATURE: {0:0.1f}".format(temperature))
+        temperature_json = '{{ "device_id":"{}", "unit":"{}", "unit_type":"{}", "gpio_pin":"{}","status":"{0:0.1f}" }}'.format(
+                        device_id, "temperature", "sensor", str(pin), temperature)
+        print("Publishing message: {}".format(temperature_json))
+        publish_message(project, topic_name, temperature_json)
+    else:
+        print('Failed to read TEMPERATURE ...')
+
 
 def run_logic(args):
     global green_led
@@ -258,6 +297,7 @@ def run_logic(args):
         while True:
             print("Generating status update message")
             publish_led_status(args.project, args.status_topic_name, args.device_id)
+            publish_temperature_and_humidity(args.project, args.status_topic_name, args.device_id)
             print("Sleeping now, {} s".format(args.frequency))
             time.sleep(args.frequency)
     except KeyboardInterrupt:
@@ -288,16 +328,6 @@ button = None
 
 
 if __name__ == '__main__':
-    #global EMULATE
-    #global reference_device_id
-    #global message_max_ttl
-    #global my_green_led_pin
-    #global my_red_led_pin
-    #global green_led
-    #global red_led
-    #global light_bulb
-    #global button
-
     EMULATE = False
     reference_device_id = None
     message_max_ttl = 0
