@@ -138,7 +138,7 @@ def on_pubsub_message(message):
                     return
                 else:
                     red_led_latest_cmd_ts = message_ts
-                    theLED = green_led
+                    theLED = red_led
             else:
                 if EMULATE != True:
                     print("GPIO PIN is not 'well-known', trying with new instantiation")
