@@ -204,14 +204,14 @@ def publish_led_status(project, topic_name, device_id):
     publish_message(project, topic_name, status_message)
 
 
-def publish_temperature_and_humidity_no_ctx():
-    publish_temperature_and_humidity(ref_gcp_project, ref_subscription_name, reference_device_id)
+#def publish_temperature_and_humidity_no_ctx():
+#    publish_temperature_and_humidity(ref_gcp_project, ref_subscription_name, reference_device_id)
 
-def publish_temperature_and_humidity(project, topic_name, device_id):
+def publish_temperature_and_humidity(project, topic_name, device_id, temp_and_humid_pin):
     current_ts = int(round(time.time() * 1000))
 
     sensor=Adafruit_DHT.AM2302
-    pin=3
+    pin=temp_and_humid_pin
     humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
 
     if humidity is not None:
@@ -298,7 +298,7 @@ def run_logic(args):
         while True:
             print("Generating status update message")
             publish_led_status(args.project, args.status_topic_name, args.device_id)
-            publish_temperature_and_humidity(args.project, args.status_topic_name, args.device_id)
+            publish_temperature_and_humidity(args.project, args.status_topic_name, args.device_id, args.temp_and_humid_pin)
             print("Sleeping now, {} s".format(args.frequency))
             time.sleep(args.frequency)
     except KeyboardInterrupt:
@@ -371,6 +371,11 @@ if __name__ == '__main__':
             type=int,
             default=60000,
             help='Maximum time-to-live for a command message to be considered as not expired')
+    parser.add_argument(
+            '--temp_and_humid_pin',
+            type=int,
+            default=3,
+            help='GPIO PIN for TEMPERATURE and HUMIDITY SENSOR')
     parser.add_argument(
             '--green_led_pin',
             type=int,
