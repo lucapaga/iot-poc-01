@@ -209,7 +209,7 @@ def publish_temperature_and_humidity_no_ctx():
 def publish_temperature_and_humidity(project, topic_name, device_id):
     current_ts = int(round(time.time() * 1000))
 
-    sensor=2302
+    sensor=Adafruit_DHT.AM2302
     pin=3
     humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
 
