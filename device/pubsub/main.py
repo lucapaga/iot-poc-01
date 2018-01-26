@@ -50,6 +50,9 @@ def publish_message(project, topic_name, message, client=None):
 
 def on_pubsub_message(message):
     try:
+        global green_led_latest_cmd_ts
+        global red_led_latest_cmd_ts
+
         print('Received COMMAND: {}'.format(message))
         aCommand = JSONDecoder().decode(message.data)
         print("Serialized version: {}".format(aCommand))
@@ -96,9 +99,9 @@ def on_pubsub_message(message):
         print("Ack-ing message")
         message.ack()
 
+        now_in_millis = int(round(time.time() * 1000))
         if message_ts != None:
             print("Checking message age ...")
-            now_in_millis = int(round(time.time() * 1000))
             print("Now is {}".format(now_in_millis))
             time_diff_s = (now_in_millis - message_ts) / 1000
             if now_in_millis - message_ts > message_max_ttl:
@@ -119,10 +122,23 @@ def on_pubsub_message(message):
             print("Explicit GPIO PIN number addressing: {}".format(target_gpio_pin))
             if target_gpio_pin == my_green_led_pin:
                 print("GPIO PIN is for the RED LED")
-                theLED = green_led
+                if message_ts != None and green_led_latest_cmd_ts > message_ts:
+                    print("This message has a timestamp ({}) that it before the latest procesed message for this LED: {}. Discarding ...".format(
+                                message_ts, green_led_latest_cmd_ts))
+                    return
+                else:
+                    green_led_latest_cmd_ts = message_ts
+                    theLED = green_led
             elif target_gpio_pin == my_red_led_pin:
                 print("GPIO PIN is for the RED LED")
                 theLED = red_led
+                if message_ts != None and red_led_latest_cmd_ts > message_ts:
+                    print("This message has a timestamp ({}) that it before the latest procesed message for this LED: {}. Discarding ...".format(
+                                message_ts, red_led_latest_cmd_ts))
+                    return
+                else:
+                    red_led_latest_cmd_ts = message_ts
+                    theLED = green_led
             else:
                 if EMULATE != True:
                     print("GPIO PIN is not 'well-known', trying with new instantiation")
@@ -195,7 +211,7 @@ def publish_led_status(project, topic_name, device_id):
     else:
         green_led_status = "unavailable"
     green_led_json = '{{ "unit": "{}", "unit_type": "{}", "gpio_pin": {}, "status": "{}" }}'.format(
-                        "red", "led", 18, green_led_status)
+                        "green", "led", 18, green_led_status)
 
     status_message = '{{ "device_id": "{}", "units": [{}, {}], "ts": {} }}'.format(
                         device_id, red_led_json, green_led_json, current_ts)
@@ -326,6 +342,9 @@ green_led = None
 red_led = None
 light_bulb = None
 button = None
+
+green_led_latest_cmd_ts = None
+red_led_latest_cmd_ts = None
 
 
 if __name__ == '__main__':
