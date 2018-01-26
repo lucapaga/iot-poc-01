@@ -183,8 +183,8 @@ def publish_led_status(project, topic_name, device_id):
             red_led_status = "off"
     else:
         red_led_status = "unavailable"
-    red_led_json = '{{ "device_id":"{}","led_color":"{}","light_type":"{}","gpio_pin":"{}","status":"{}" }}'.format(
-                        device_id, "red", "led", "17", red_led_status)
+    red_led_json = '{{ "unit":"{}", "unit_type":"{}", "gpio_pin":"{}", "status":"{}" }}'.format(
+                        "red", "led", 17, red_led_status)
 
     green_led_status = None
     if green_led != None:
@@ -194,10 +194,11 @@ def publish_led_status(project, topic_name, device_id):
             green_led_status = "off"
     else:
         green_led_status = "unavailable"
-    green_led_json = '{{ "device_id":"{}","led_color":"{}","light_type":"{}","gpio_pin":"{}","status":"{}" }}'.format(
-                        device_id, "red", "led", "18", green_led_status)
+    green_led_json = '{{ "unit":"{}", "unit_type":"{}", "gpio_pin":"{}", "status":"{}" }}'.format(
+                        "red", "led", 18, green_led_status)
 
-    status_message = '{{ "devices": [{}, {}], "ts":"{}" }}'.format(red_led_json, green_led_json, current_ts)
+    status_message = '{{ "device_id":"{}", "units": [{}, {}], "ts":"{}" }}'.format(
+                        device_id, red_led_json, green_led_json, current_ts)
 
     print("Publishing message: {}".format(status_message))
     publish_message(project, topic_name, status_message)
@@ -215,8 +216,8 @@ def publish_temperature_and_humidity(project, topic_name, device_id):
 
     if humidity is not None:
         print(" *** HUMIDITY: {}".format(humidity))
-        humidity_json = '{{ "device_id":"{}", "unit":"{}", "unit_type":"{}", "gpio_pin":{}, "value":{} }}'.format(
-                        device_id, "humidity", "sensor", pin, humidity)
+        humidity_json = '{{ "device_id":"{}", "units": [{{ "unit":"{}", "unit_type":"{}", "gpio_pin":{}, "value":{} }}], "ts":"{}" }}'.format(
+                        device_id, "humidity", "sensor", pin, humidity, current_ts)
         print("Publishing message: {}".format(humidity_json))
         publish_message(project, topic_name, humidity_json)
     else:
@@ -224,8 +225,8 @@ def publish_temperature_and_humidity(project, topic_name, device_id):
 
     if temperature is not None:
         print(" *** TEMPERATURE: {}".format(temperature))
-        temperature_json = '{{ "device_id":"{}", "unit":"{}", "unit_type":"{}", "gpio_pin":{}, "value":{} }}'.format(
-                        device_id, "temperature", "sensor", pin, temperature)
+        temperature_json = '{{ "device_id":"{}", "units": [{{ "unit":"{}", "unit_type":"{}", "gpio_pin":{}, "value":{} }}], "ts":"{}" }}'.format(
+                        device_id, "temperature", "sensor", pin, temperature, current_ts)
         print("Publishing message: {}".format(temperature_json))
         publish_message(project, topic_name, temperature_json)
     else:
