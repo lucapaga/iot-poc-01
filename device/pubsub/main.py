@@ -215,7 +215,7 @@ def publish_temperature_and_humidity(project, topic_name, device_id):
 
     if humidity is not None:
         print(" *** HUMIDITY: {}".format(humidity))
-        humidity_json = '{{ "device_id":"{}", "unit":"{}", "unit_type":"{}", "gpio_pin":"{}","status":"{}" }}'.format(
+        humidity_json = '{{ "device_id":"{}", "unit":"{}", "unit_type":"{}", "gpio_pin":{}, "value":{} }}'.format(
                         device_id, "humidity", "sensor", pin, humidity)
         print("Publishing message: {}".format(humidity_json))
         publish_message(project, topic_name, humidity_json)
@@ -224,7 +224,7 @@ def publish_temperature_and_humidity(project, topic_name, device_id):
 
     if temperature is not None:
         print(" *** TEMPERATURE: {}".format(temperature))
-        temperature_json = '{{ "device_id":"{}", "unit":"{}", "unit_type":"{}", "gpio_pin":"{}","status":"{}" }}'.format(
+        temperature_json = '{{ "device_id":"{}", "unit":"{}", "unit_type":"{}", "gpio_pin":{}, "value":{} }}'.format(
                         device_id, "temperature", "sensor", pin, temperature)
         print("Publishing message: {}".format(temperature_json))
         publish_message(project, topic_name, temperature_json)
