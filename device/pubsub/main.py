@@ -214,8 +214,8 @@ def publish_temperature_and_humidity(project, topic_name, device_id):
     humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
 
     if humidity is not None:
-        print(" *** HUMIDITY: {0:0.1f}".format(humidity))
-        humidity_json = '{{ "device_id":"{}", "unit":"{}", "unit_type":"{}", "gpio_pin":"{}","status":"{0:0.1f}" }}'.format(
+        print(" *** HUMIDITY: {0.1f}".format(humidity))
+        humidity_json = '{{ "device_id":"{}", "unit":"{}", "unit_type":"{}", "gpio_pin":"{}","status":"{0.1f}" }}'.format(
                         device_id, "humidity", "sensor", str(pin), humidity)
         print("Publishing message: {}".format(humidity_json))
         publish_message(project, topic_name, humidity_json)
@@ -223,8 +223,8 @@ def publish_temperature_and_humidity(project, topic_name, device_id):
         print('Failed to read HUMIDITY ...')
 
     if temperature is not None:
-        print(" *** TEMPERATURE: {0:0.1f}".format(temperature))
-        temperature_json = '{{ "device_id":"{}", "unit":"{}", "unit_type":"{}", "gpio_pin":"{}","status":"{0:0.1f}" }}'.format(
+        print(" *** TEMPERATURE: {0.1f}".format(temperature))
+        temperature_json = '{{ "device_id":"{}", "unit":"{}", "unit_type":"{}", "gpio_pin":"{}","status":"{0.1f}" }}'.format(
                         device_id, "temperature", "sensor", str(pin), temperature)
         print("Publishing message: {}".format(temperature_json))
         publish_message(project, topic_name, temperature_json)
