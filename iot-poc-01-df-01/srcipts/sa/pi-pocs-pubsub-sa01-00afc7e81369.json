@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "luca-paganelli-formazione",
+  "private_key_id": "00afc7e8136974d79508c0e0d207663cf1c2495c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC02V3gXqz5/E65\nvj2gT7pxXevTqvAk6EenMkdUe1XkQJTn1OxiEWxrLrkwgJGsSTJikqFyGxbzrGhW\nnjcDa0yOnfwPx6hLWsjoG149wiCgpxK+t8Jrn8FbcWwHYIWD8b1lqDNQpD+QLj0o\nS8UtsFtYJKhVH41bRTqhOsLA2ga+8vG/zfbn2t0xs89JrMARUMQg+FJbgkGCWk1r\nWuGsJhXl/eNNuw42p8mjUmou1MgVC81b4HKbtxauZHhXC5XHeZA6+oBvHzPyiqpm\n+hETJicOdglrBtSEM8rveW284luD1HE7b5bSVLJeUJ4/XZWtn4goHsgwuF1vgKyj\nXpbwAhXlAgMBAAECggEAR15snKngK3s1ejmoSkaMdkaxVUPlJzt/Y20FF0Lg/4W4\n/dBaRM1JcvbqYEistEfimWHyUnx8T0dfmacwYKoMeU/BdFy/fpViKa77PvYIOD4W\nuKr+D8jo3nRhRHwD1LEmpCJ/tbhL2VNWETvtoX0yXxOAVq9v8m/clloBF2gzN1Ew\nwDrY99h/LPJE41x2+9PwV+844mRTz95DNWwO0TYrMnyoAbSeZOrffamT6QTqTuWT\nHzYmSLsJ1qbO81icR24EN/3sVDrrZss8LSDLMN9mrLyRjoeoLcFdMsTtATvxJVCX\nGEvcK3rXpPk5TJvgZKXmMmbEOXeb4nWKQ+4U3ADA9QKBgQDfmU8vSnPhvIgkyiXz\n40XROiySrTg2N+CHH83BOIolTRSciCOW9f1WHOn1W4rYeWuML1oR6UVRin/eW7ra\nb3J7JYs2JXkwQBaWkfXF7gfxN2e2gv7eoLDI+nhlxLD2PCKmrUCnTGIz7B4pjCbM\nnQAji8l4NO3pHR27iGXr5qmpFwKBgQDPDjLoQKuY3btfDpBEUBBkJj0L7msVKFh3\nTMGYaBPnPy87mlwLl+CPsLj+RHKxqAACukQah3PuoxHo9XMzkX6MbXWAzlpJPtW5\nfxwQ7Sq56/f6/53dB6y/0LIfwOlSgBuKbOVROeDsVsUqeWqBCiVv/aJOIVi/vwvC\nnkTeDTMeYwKBgQDDy8/XLW8EAL+G160cP6vnZvWZCy3p7Ewkhuj5hbUSrMibuWrQ\nyl8ohPEp9RtELC7M9rn8bTRSDuGhqNmaZXTt+RZKN85DPhuJhg6dX658v3OGEnd0\nI2oq04mSNAZx2H7PTW8MEIr9xIk1AJEJI4H3nnSxWkfqlaBvkyUMyVNPyQKBgDJR\nug91f/5jjKC6Ulc3ufQM0vMuWvnGV1GO5tGaIZQmZ90tU0dB/sIM6bhpfBIuyOng\nyKJF3ufU24po9DlJF58bDt5hx9FbIue0u2ZlrOeIMDjgnEXWEqZ/GnrbEBkLpyXJ\n9yT5Uu882yfKYBbCF30S/7nLIt1emYYPnp70SEMPAoGBALnkQeo5bVKkg/mxMdTS\nNSFm2FijdY5SdtDe9d9UsAXLZdz4zmYmhon+143yY5AP6WiJGDAm5WtLHFPM4e6X\no7FNr4ORx4UYrZinO4/mNAuOMGYUA3Mbo92XfsjF0cACd5RfpX1EMnRXLqca9gT5\ngtjzg6tpkSBcaCtHL8ooCD8E\n-----END PRIVATE KEY-----\n",
+  "client_email": "pi-pocs-pubsub-sa01@luca-paganelli-formazione.iam.gserviceaccount.com",
+  "client_id": "115385332815243412681",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/pi-pocs-pubsub-sa01%40luca-paganelli-formazione.iam.gserviceaccount.com"
+}
