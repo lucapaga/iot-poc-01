@@ -2,6 +2,7 @@ package it.lucapaga.pocs.iot.dataflow.poc03.flow;
 
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
+import org.apache.beam.sdk.io.gcp.datastore.DatastoreIO;
 import org.apache.beam.sdk.io.gcp.pubsub.PubsubIO;
 import org.apache.beam.sdk.io.gcp.pubsub.PubsubMessage;
 import org.apache.beam.sdk.options.PipelineOptionsFactory;
@@ -14,13 +15,13 @@ import com.google.datastore.v1.Entity;
 import it.lucapaga.pocs.iot.dataflow.poc03.model.DeviceDetails;
 import it.lucapaga.pocs.iot.dataflow.poc03.transforms.CreateSensorValuesBigQueryRecordFn;
 import it.lucapaga.pocs.iot.dataflow.poc03.transforms.CreateStatusUpdatesBigQueryRecordFn;
+import it.lucapaga.pocs.iot.dataflow.poc03.transforms.DataStoreRetrievalLogger;
 import it.lucapaga.pocs.iot.dataflow.poc03.transforms.FilterSensorValuesFn;
 import it.lucapaga.pocs.iot.dataflow.poc03.transforms.FilterStatusValuesFn;
 import it.lucapaga.pocs.iot.dataflow.poc03.transforms.FlattenDeviceMessageFn;
 import it.lucapaga.pocs.iot.dataflow.poc03.transforms.ParseDeviceMessageFn;
 import it.lucapaga.pocs.iot.dataflow.poc03.transforms.PrepareBigQueryRowsForSensorValuesFn;
 import it.lucapaga.pocs.iot.dataflow.poc03.transforms.PrepareBigQueryRowsForStatusValuesFn;
-import it.lucapaga.pocs.iot.dataflow.poc03.transforms.RetrieveDeviceFromDataStoreAndPrepareUpdateFn;
 
 public class DeviceUpdatesStreamingPipeline {
 	public static void main(String[] args) {
@@ -29,8 +30,11 @@ public class DeviceUpdatesStreamingPipeline {
 		Pipeline p = Pipeline.create(options);
 
 		PCollection<PubsubMessage> pubsubSource = configurePubSubSourceSink(p, options);
+		PCollection<Entity> dataStoreSource = configureDataStoreSourceSink(p, options);
+		PCollection<Entity> dataStoreSource2 = logRetrievedEntities(dataStoreSource, options);
 		PCollection<DeviceDetails> deviceDetails = configureMsgParser(pubsubSource, options);
-		PCollection<Entity> dataStoreIORecord = retrieveDeviceFromDataStoreAndPrepareUpdate(deviceDetails, options);
+		// PCollection<Entity> dataStoreIORecord =
+		// retrieveDeviceFromDataStoreAndPrepareUpdate(deviceDetails, options);
 		PCollection<DeviceDetails> deviceDetailsFlat = flattenDeviceDetails(deviceDetails, options);
 		PCollection<DeviceDetails> sensorValuesOnly = filterSensorValueIODetails(deviceDetailsFlat, options);
 		PCollection<DeviceDetails> statusValuesOnly = filterStatusValueIODetails(deviceDetailsFlat, options);
@@ -38,9 +42,26 @@ public class DeviceUpdatesStreamingPipeline {
 		PCollection<TableRow> bqStatusRecords = prepareBigQueryRowsForStatusValues(statusValuesOnly, options);
 		writeSensorValuesToBQ(bqValueRecords, options);
 		writeStatusValuesToBQ(bqStatusRecords, options);
-		writeDeviceUpdatesToDataStore(dataStoreIORecord, options);
+		writeDeviceUpdatesToDataStore(dataStoreSource2, options);
 
 		p.run().waitUntilFinish();
+	}
+
+	private static PCollection<Entity> logRetrievedEntities(PCollection<Entity> dataStoreSource,
+			DeviceUpdatesStreamingPipelineOptions options) {
+		return dataStoreSource.apply("LogDataStoreRetrieval", ParDo.of(new DataStoreRetrievalLogger()));
+	}
+
+	private static PCollection<Entity> configureDataStoreSourceSink(Pipeline p,
+			DeviceUpdatesStreamingPipelineOptions options) {
+		// Query<Entity> query = Query.newBuilder().
+		// newEntityQueryBuilder().setKind("IOTDevice")
+		// .setFilter(StructuredQuery.PropertyFilter.eq("device_id",
+		// dd.getDevice_id()))
+		// .setOrderBy(OrderBy.asc("created")).build();
+		PCollection<Entity> entities = p
+				.apply(DatastoreIO.v1().read().withProjectId(options.getProject()).withLiteralGqlQuery("SELECT * FROM IOTDevice"));
+		return entities;
 	}
 
 	private static void writeDeviceUpdatesToDataStore(PCollection<Entity> dataStoreIORecord,
@@ -50,8 +71,10 @@ public class DeviceUpdatesStreamingPipeline {
 
 	private static PCollection<Entity> retrieveDeviceFromDataStoreAndPrepareUpdate(
 			PCollection<DeviceDetails> deviceDetails, DeviceUpdatesStreamingPipelineOptions options) {
-		return deviceDetails.apply("retrieveDeviceFromDataStoreAndPrepareUpdate",
-				ParDo.of(new RetrieveDeviceFromDataStoreAndPrepareUpdateFn()));
+		return null;
+		// return
+		// deviceDetails.apply("retrieveDeviceFromDataStoreAndPrepareUpdate",
+		// ParDo.of(new RetrieveDeviceFromDataStoreAndPrepareUpdateFn()));
 	}
 
 	private static void writeStatusValuesToBQ(PCollection<TableRow> bqStatusRecords,
