@@ -310,11 +310,17 @@ def run_logic(args):
 
     print("Going Live ...")
 
+    last_t_and_h_msg_pub_ts = int(round(time.time() * 1000))
     try:
         while True:
+            now_ts = int(round(time.time() * 1000))
             print("Generating status update message")
             publish_led_status(args.project, args.status_topic_name, args.device_id)
-            publish_temperature_and_humidity(args.project, args.status_topic_name, args.device_id, args.temp_and_humid_pin)
+
+            if now_ts - last_t_and_h_msg_pub_ts > (args.temp_and_humid_frequency * 1000):
+                last_t_and_h_msg_pub_ts = now_ts
+                publish_temperature_and_humidity(args.project, args.status_topic_name, args.device_id, args.temp_and_humid_pin)
+
             print("Sleeping now, {} s".format(args.frequency))
             time.sleep(args.frequency)
     except KeyboardInterrupt:
@@ -395,6 +401,11 @@ if __name__ == '__main__':
             type=int,
             default=3,
             help='GPIO PIN for TEMPERATURE and HUMIDITY SENSOR')
+    parser.add_argument(
+            '--temp_and_humid_frequency',
+            type=int,
+            default=300,
+            help='PERIODICITY FOR TEMPERATURE and HUMIDITY SENSOR PROBING TO PUB/SUB')
     parser.add_argument(
             '--green_led_pin',
             type=int,

@@ -1,0 +1,1 @@
+{ "device_id": "957f6691-f6e2-4d83-bb01-801530bff042", "units": [{ "unit": "red", "unit_type": "led", "gpio_pin": 17, "status": "off" }, { "unit": "green", "unit_type": "led", "gpio_pin": 18, "status": "off" }], "ts": 1518291898726 }
